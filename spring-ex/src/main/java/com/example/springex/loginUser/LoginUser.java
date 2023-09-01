@@ -2,12 +2,13 @@ package com.example.springex.loginUser;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.Getter;
+import jakarta.persistence.Table;
 
 import java.util.Objects;
 
 
 @Entity
+@Table(name="t_login_user")
 public class LoginUser {
 
     @Id

@@ -1,7 +1,9 @@
 package com.example.springex.interceptor;
 
+import com.example.springex.exceptions.KeyCacheException;
 import com.example.springex.loginUser.ILoginUserRepository;
 import com.example.springex.loginUser.LoginUser;
+import com.example.springex.service.KeyCacheService;
 import com.example.springex.service.LoginService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,67 +35,25 @@ import java.util.stream.Collectors;
 public class SecurityFilter extends HttpFilter {
 
     private static final String TEST_URL = "/test/login";
-    private LoginService loginService;
-
-
-//    @Override
-//    public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException, ServletException, IOException {
-//        String authorization = request.getHeader("Authorization");
-//        if (isValid(authorization)) {
-//            chain.doFilter(request, response);
-//        } else {
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//        }
-//
-//    }
-
-//    @Override
-//    public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)throws IOException, ServletException{
-//
-//        String authorization = ".(.())";
-//        if (authorization.equals(1)){
-//            chain.doFilter(request,response);
-//        }
-//        else{
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//        }
-//
-//    }
+    private KeyCacheService keyCacheService;
 
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
         if (request.getRequestURI().equals(TEST_URL)) {
-            chain.doFilter(request,response);
+            chain.doFilter(request, response);
 
         } else {
-            //todo
-            String authorization = request.getHeader("Authorization");
-            boolean isAuth = loginService.isTokenValid(authorization);
-            if (isAuth){
-                chain.doFilter(request,response);
-            }
-            else {
+            try {
+                String key = request.getHeader("Authorization");
+                keyCacheService.checkKey(key);
+                chain.doFilter(request, response);
+
+            } catch (KeyCacheException e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
         }
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<String> login(@RequestBody LoginUser loginUser){
-//        LoginUser storedUser = ILoginUserRepository.findByUserName(loginUser.getUserName());
-//        if (storedUser != null && storedUser.getPassword().equals(loginUser.getPassword())){
-//            return ResponseEntity.ok("Login Successful");
-//        }
-//        else {
-//            return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login Failed");
-//        }
-//    }
-
-
-//    private boolean isValid(String authorization) {
-//        return authorization.equals("password");
-//        return true;
-//    }
 }

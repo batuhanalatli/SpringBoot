@@ -14,34 +14,18 @@ import java.util.concurrent.TimeUnit;
 public class LoginService {
 
     private ILoginUserRepository loginUserRepository;
-    private static String key;
-    private static Date date;
+    private KeyCacheService keyCacheService;
 
     public String login(LoginUser loginUser) {
 
         LoginUser userInRepo = loginUserRepository.findByUserName(loginUser.getUserName());
         if (userInRepo != null && userInRepo.getPassword().equals(loginUser.getPassword())) {
-            String tmpKey = "abc";
-            tmpKey = key;
-            date = new Date();
-            return "Success";
+            String tmpKey = "abc123";
+            keyCacheService.putKey(tmpKey);
+            return tmpKey;
         } else {
             return "Not Auth";
         }
-    }
-
-    public boolean isTokenValid(String tmpKey) {
-        Date tmpDate = new Date();
-
-        if (key == null || date == null) {
-            return false;
-        }
-        long diffInMillies = Math.abs(tmpDate.getTime() - date.getTime());
-        long diff = TimeUnit.SECONDS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-        if (diff>60){
-            return false;
-        }
-        return key.equals(tmpKey);
     }
 
 }
