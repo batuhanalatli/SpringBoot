@@ -1,7 +1,7 @@
 package com.example.springex.controller;
 
 
-import com.example.springex.loginUser.LoginUser;
+import com.example.springex.entity.LoginUser;
 import com.example.springex.service.LoginService;
 import com.example.springex.service.ServiceTest;
 import lombok.AllArgsConstructor;
@@ -18,19 +18,6 @@ public class LoginController {
     private ServiceTest serviceTest;
     LoginService loginService;
 
-
-//    @GetMapping("/print")
-//    public List<LoginUser> getLoginUsers(){
-//        return loginUserRepository.findAll();
-//    }
-
-
-//    @PostMapping("/register")
-//    public ResponseEntity<String> register(@RequestBody LoginUser loginUser){
-//        loginUserRepository.save(loginUser);
-//        return ResponseEntity.ok("User Registered!");
-//    }
-
     @PostMapping("/login")
     public String login(@RequestBody LoginUser loginUser){
         return loginService.login(loginUser);
@@ -40,5 +27,4 @@ public class LoginController {
     public String log(){
         return serviceTest.log();
     }
-
 }

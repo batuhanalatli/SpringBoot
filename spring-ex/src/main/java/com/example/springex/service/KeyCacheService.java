@@ -49,7 +49,7 @@ public class KeyCacheService {
             Date now = new Date();
             long diffInMillies = Math.abs(now.getTime() - cacheDate.getTime());
             long diff = TimeUnit.SECONDS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-            if (diff>60){
+            if (diff>600){
                 cache.evict(tmpKey);
                 throw new KeyCacheException(new Exception("Key is expired"));
             }

@@ -1,13 +1,9 @@
 package com.example.springex.service;
 
-import com.example.springex.loginUser.ILoginUserRepository;
-import com.example.springex.loginUser.LoginUser;
+import com.example.springex.repository.ILoginUserRepository;
+import com.example.springex.entity.LoginUser;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 @AllArgsConstructor
 @Service
